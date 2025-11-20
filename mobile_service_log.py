@@ -72,8 +72,12 @@ with st.form("mobile_service_log_form", clear_on_submit=True):
     customer_name = st.selectbox("Customer Name *", [""] + customer_list, key="new_customer")
 
     default_contact = customer_contacts.get(customer_name, {}).get("contact_person", "") if customer_name else ""
+    default_phone = customer_contacts.get(customer_name, {}).get("phone", "") if customer_name else ""
 
     contact_person = st.text_input("Contact Person", value=default_contact, key="new_contact")
+    
+
+    phone = st.number_input("Contact Phone Number", value=default_phone)
 
     instrument_name = st.text_input("Instrument Name")
 
@@ -116,6 +120,7 @@ if submitted:
         "last_updated": now,
         "customer_name": customer_name,
         "contact_person": contact_person,
+        "phone": phone,
         "instrument_name": instrument_name,
         "warranty_status": warranty_status,
         "technician_name": technician_name,
@@ -135,4 +140,5 @@ if submitted:
         st.balloons()
     except Exception as e:
         st.error(f"Error submitting service log: {e}")
+
 
