@@ -22,16 +22,16 @@ with st.form("mobile_service_log_form", clear_on_submit=True):
         ["In Warranty", "AMC", "Out of Warranty/AMC"]
     )
 
-    technician_name = st.text_input("Technician Name")
+    technician_name = st.text_input("Engineer's Name")
     date_visited = st.date_input("Date Visited", value=date.today())
 
-    problem_description = st.text_area("Problem Description")
+    problem_description = st.text_area("Customer's Complaint:")
     call_type = st.selectbox(
         "Call Type",
         ["Installation", "Preventive Maintenance", "Breakdown", "Training", "Other"]
     )
 
-    action_taken = st.text_area("Action Taken")
+    action_taken = st.text_area("Description of Work Done:")
     status = st.selectbox(
         "Status",
         ["Open", "On Hold", "Solved"]
@@ -72,3 +72,4 @@ if submitted:
 
     st.success("⏳ Submitted — waiting for admin approval.")
     st.balloons()
+
