@@ -70,14 +70,16 @@ st.write("Simple mobile form – all entries go to admin for review.")
 with st.form("mobile_service_log_form", clear_on_submit=True):
 
     customer_name = st.selectbox("Customer Name *", [""] + customer_list, key="new_customer")
-
+    
     default_contact = customer_contacts.get(customer_name, {}).get("contact_person", "") if customer_name else ""
     default_phone = customer_contacts.get(customer_name, {}).get("phone", "") if customer_name else ""
-
-    contact_person = st.text_input("Contact Person", value=default_contact, key="new_contact")
     
+    contact_person = st.text_input("Contact Person", value=default_contact, key="new_contact")
+        
+    # FIX: phone as text input, never number_input
+    phone = st.text_input("Contact Phone Number", value=str(default_phone))
 
-    phone = st.number_input("Contact Phone Number", value=default_phone)
+    
 
     instrument_name = st.text_input("Instrument Name")
 
@@ -140,5 +142,6 @@ if submitted:
         st.balloons()
     except Exception as e:
         st.error(f"Error submitting service log: {e}")
+
 
 
