@@ -70,17 +70,25 @@ st.write("Simple mobile form – all entries go to admin for review.")
 with st.form("mobile_service_log_form", clear_on_submit=True):
 
     customer_name = st.selectbox("Customer Name *", [""] + customer_list, key="new_customer")
+
+
+    # Session-state tracking for dynamic updates
+    if "selected_customer" not in st.session_state:
+        st.session_state.selected_customer = ""
     
-    default_contact = customer_contacts.get(customer_name, {}).get("contact_person", "") if customer_name else ""
-    default_phone = customer_contacts.get(customer_name, {}).get("phone", "") if customer_name else ""
+    if customer_name != st.session_state.selected_customer:
+        st.session_state.selected_customer = customer_name
     
-    contact_person = st.text_input("Contact Person", value=default_contact, key="new_contact")
-        
-    # FIX: phone as text input, never number_input
-    phone = st.text_input("Contact Phone Number", value=str(default_phone))
+        st.session_state.new_contact = customer_contacts.get(customer_name, {}).get("contact_person", "")
+        st.session_state.new_phone = customer_contacts.get(customer_name, {}).get("phone", "")
+
+with st.form("mobile_service_log_form", clear_on_submit=True):
+
+    contact_person = st.text_input("Contact Person", key="new_contact")
+
+    phone = st.text_input("Contact Phone Number", key="new_phone")
 
     
-
     instrument_name = st.text_input("Instrument Name")
 
     warranty_status = st.selectbox(
@@ -142,6 +150,7 @@ if submitted:
         st.balloons()
     except Exception as e:
         st.error(f"Error submitting service log: {e}")
+
 
 
 
