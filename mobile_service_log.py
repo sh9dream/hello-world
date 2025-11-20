@@ -69,16 +69,28 @@ st.write("Simple mobile form – all entries go to admin for review.")
 
 customer_name = st.selectbox("Customer Name *", [""] + customer_list, key="new_customer")
 
-
-# Session-state tracking for dynamic updates
 if "selected_customer" not in st.session_state:
     st.session_state.selected_customer = ""
 
+# Make sure keys exist
+if "new_contact" not in st.session_state:
+    st.session_state.new_contact = ""
+
+if "new_phone" not in st.session_state:
+    st.session_state.new_phone = ""
+
+# Update defaults safely
 if customer_name != st.session_state.selected_customer:
     st.session_state.selected_customer = customer_name
 
-    st.session_state.new_contact = customer_contacts.get(customer_name, {}).get("contact_person", "")
-    st.session_state.new_phone = customer_contacts.get(customer_name, {}).get("phone", "")
+    st.session_state.new_contact = str(
+        customer_contacts.get(customer_name, {}).get("contact_person", "")
+    )
+
+    st.session_state.new_phone = str(
+        customer_contacts.get(customer_name, {}).get("phone", "")
+    )
+
 
 with st.form("mobile_service_log_form", clear_on_submit=True):
 
@@ -148,6 +160,7 @@ if submitted:
         st.balloons()
     except Exception as e:
         st.error(f"Error submitting service log: {e}")
+
 
 
 
