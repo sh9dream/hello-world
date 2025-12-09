@@ -13,11 +13,10 @@ DEPENDENCIES:
     pip install python-dotenv
 """
 
-from supabase import create_client
-from dotenv import load_dotenv
 import os
 import pandas as pd
-
+from datetime import datetime, date
+from db_connection import supabase
 # Load .env (SUPABASE_URL and SUPABASE_KEY)
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -25,23 +24,43 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+
 # ===================== FETCH ALL SERVICE LOGS ======================
+def load_paginated_data(table_name, columns="*"):
+    all_data = []
+    page_size = 1000
+    start = 0
+
+    while True:
+        try:
+            response = supabase.table(table_name).select(columns).range(start, start + page_size - 1).execute()
+        except Exception as e:
+            st.error(f"Error loading {table_name}: {e}")
+            break
+
+        batch = response.data
+        if not batch:
+            break
+
+        all_data.extend(batch)
+        start += page_size
+
+    return pd.DataFrame(all_data) if all_data else pd.DataFrame()
 
 def get_all_logs():
-    response = supabase.table("service_logs").select("*").execute()
-    return pd.DataFrame(response.data)
+    return load_paginated_data("Service_Log")
 
 # ===================== FILTER BY TECHNICIAN ======================
 
 def filter_by_engineer(engineer_name: str):
-    response = supabase.table("service_logs").select("*").eq("technician_name", engineer_name).execute()
+    response = supabase.table("Service_Log").select("*").eq("technician_name", engineer_name).execute()
     return pd.DataFrame(response.data)
 
 # ===================== UPDATE A SERVICE LOG ENTRY ======================
 
 def update_service_log(entry_id: int, updated_data: dict):
     try:
-        response = supabase.table("service_logs").update(updated_data).eq("id", entry_id).execute()
+        response = supabase.table("Service_log").update(updated_data).eq("id", entry_id).execute()
         return response.data
     except Exception as e:
         return str(e)
