@@ -17,12 +17,6 @@ import os
 import pandas as pd
 from datetime import datetime, date
 from db_connection import supabase
-# Load .env (SUPABASE_URL and SUPABASE_KEY)
-load_dotenv()
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
 # ===================== FETCH ALL SERVICE LOGS ======================
