@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime, date, timedelta
 from db_connection import supabase
 
+dashboard_url = "https://hello-world-dashboard9841470867.streamlit.app"
 st.set_page_config(page_title="Mobile Service App", layout="centered", page_icon="📱")
 
 # Custom CSS for mobile-friendly styling
@@ -267,7 +268,8 @@ if st.session_state.mobile_mode == "home":
     st.markdown("---")
     st.caption("📱 Mobile Service App v3.0")
     st.caption(f"Last updated: {datetime.now().strftime('%H:%M:%S')}")
-    st.link_button("Open Dashboard", "https://hello-world-dashboard9841470867.streamlit.app/")
+    st.link_button("View Dashboard", dashboard_url)
+
 # -----------------------------------------------------------
 # NEW SERVICE LOG SCREEN
 # -----------------------------------------------------------
@@ -811,6 +813,7 @@ if st.session_state.mobile_mode != "home":
     st.caption(f"📱 Mobile Service App v3.0 | {len(unsolved_df) if st.session_state.mobile_mode == 'update_log' and not unsolved_df.empty else ''}")
     st.caption(f"Last updated: {datetime.now().strftime('%H:%M:%S')}")
     
+
 
 
 
