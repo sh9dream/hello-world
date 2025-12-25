@@ -810,3 +810,5 @@ if st.session_state.mobile_mode != "home":
     st.markdown("---")
     st.caption(f"📱 Mobile Service App v3.0 | {len(unsolved_df) if st.session_state.mobile_mode == 'update_log' and not unsolved_df.empty else ''}")
     st.caption(f"Last updated: {datetime.now().strftime('%H:%M:%S')}")
+    st.link_button("Open Dashboard", "https://hello-world-dashboard9841470867.streamlit.app")
+
